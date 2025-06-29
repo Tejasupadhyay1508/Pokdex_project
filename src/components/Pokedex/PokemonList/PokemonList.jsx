@@ -7,9 +7,15 @@ import Pokemon from "../../Pokemon/Pokemon";
 function PokemonList(){
     const[pokemonList,setPokemonList] = useState([]);
     const[isLoading, setIsLoading] = useState(true);
-    const POKEDEX_URL ='https://pokeapi.co/api/v2/pokemon';
+    const [pokedexUrl, setPokedexUrl] =useState('https://pokeapi.co/api/v2/pokemon');
+
+    const[nextUrl,setNextUrl] = useState('');
+    const[prevUrl,setPrevUrl] = useState('');
+
+
     async function downloadPokemon(){
-        const response = await axios.get(POKEDEX_URL) // Fetching the data from the API
+        setIsLoading(true); // Setting loading state to true before fetching data
+        const response = await axios.get(pokedexUrl) // Fetching the data from the API
         const pokemonResults = response.data.results; // Getting the results from the response
         console.log(pokemonResults);
         //ITERATING OVER THE POKEMON RESULTS AND using their url to create an array of promises
@@ -19,6 +25,8 @@ function PokemonList(){
         //passing that promise array to axios all
         const pokemonData = await axios.all (pokemonResultPromise);// array of 20 pokemon detailed data
         console.log(pokemonData);
+        setNextUrl(response.data.next); 
+        setPrevUrl(response.data.previous); //setting the next and previous urls for pagination
 
         //now iterate over the pokemonData to extract the data we need
         const res = pokemonData.map((pokeData) => { 
@@ -39,7 +47,7 @@ function PokemonList(){
     useEffect(() => {
         downloadPokemon();
         
-    },[]);
+    },[pokedexUrl]);
     
 
     return(
@@ -51,8 +59,8 @@ function PokemonList(){
          }
          </div>
          <div className="controls">
-            <button>Prev</button>
-            <button>Next</button>
+            <button disabled={prevUrl == null} onClick={()=> setPokedexUrl(prevUrl)}>Prev</button>
+            <button  disabled={nextUrl == null} onClick={()=>setPokedexUrl(nextUrl)}>Next</button>
          </div>
          
          

@@ -5,10 +5,10 @@ function Search(){
     <div className="Search-wrapper">
     <input 
       id="pokemon-name-search"
-
      type="text"
      placeholder="Search for a Pokémon ?"
    />
+   
     
     </div>
   )

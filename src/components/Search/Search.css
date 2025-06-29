@@ -1,12 +1,16 @@
 .Serach-wrapper {
     
-    margin:0 auto;
+    
+    margin: 0 auto;
+    
 }
 
 
 #pokemon-name-search{
     margin: 2rem;
     padding: 1.5rem;
-
-    width: 600px;
+    border: 1px solid black;
+    
+    display: flex;
+    width: 1000px;
 }
